@@ -1,0 +1,20 @@
+{
+  "name": "whattchat",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "This is a chat application\"",
+  "license": "ISC",
+  "author": "Alice",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"node server.js",
+    "dev":"nodemon server.js"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.8",
+    "express": "^5.3.0",
+    "mongoose": "^9.11.3",
+    "nodemon": "^3.1.14"
+  }
+}
