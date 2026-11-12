@@ -6,6 +6,7 @@ import { userValidations, validateUser } from "../middleware/userValidator.js";
 const router=express.Router()
 
 router.post("/signup",userExist, userValidations,validateUser, Controller.signup)
+router.post("/login",Controller.login)
 router.get("/users",Controller.getAllUsers)
 router.get("/users/:id",Controller.getOneUser)
 router.patch("/users/:id",Controller.updateUser)
