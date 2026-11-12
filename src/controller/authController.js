@@ -1,5 +1,7 @@
+import { StatusCodes } from "http-status-codes";
 import User from "../models/userModel.js";
-import hashPassword from "../utils/passwordUtils.js";
+import {hashPassword,comparePassword} from "../utils/passwordUtils.js"
+import jwt from "jsonwebtoken"
 
 
 class Controller{
@@ -20,10 +22,51 @@ class Controller{
               console.log(error)
               return res.status(500).json({
                   success:false,
-                  message:"Failed to create user",
+                  message:"Login Failed",
                   error:error.message
               })
           }
+    }
+
+    static login = async (req,res)=>{
+        try {
+            const user = await User.findOne({email:req.body.email})
+            if(!user){
+                return res.status(StatusCodes.UNAUTHORIZED).json({
+                    success:false,
+                    message:"Invalid email or password"
+                })
+            }else{
+                
+                const verfiedPassword = await comparePassword(req.body.password,user.password)
+                if(!verfiedPassword){
+                   return res.status(StatusCodes.UNAUTHORIZED).json({
+                    success:false,
+                    message:"Invalid email or password"
+                }) 
+                }else{
+                    const userInfo={
+                        id:user._id,
+                        role:user.role
+                    }
+                
+                    const token = jwt.sign(userInfo,process.env.SCRET_KEY,{expiresIn:'1d'})
+
+                    return res.status(StatusCodes.OK).json({
+                        success:true,
+                        message:"Login successfuly",
+                        token:token
+                    })
+                } 
+            }
+        } catch (error) {
+             console.log(error)
+              return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+                  success:false,
+                  message:"Failed to create user",
+                  error:error.message
+              })
+        }
     }
 
 
