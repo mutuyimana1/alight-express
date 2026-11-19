@@ -75,6 +75,7 @@ class Controller{
 
     static getAllUsers = async (req,res)=>{
          try{
+            
         const users=await User.find();
         if(!users.length){
             return res.status(404).json({success:false,message:"no users found"})
@@ -120,13 +121,6 @@ class Controller{
 
    static deleteUser= async (req,res) =>{
      try{
-        const role = req.user.role
-        if(role !== "admin"){
-            return res.status(StatusCodes.UNAUTHORIZED).json({
-                success:false,
-                message:"You don't have access to delete user"
-            })
-        }
         const user=await User.findByIdAndDelete(req.params.id);
         if(!user){
             return res.status(404).json({success:false,message:"user not found"})

@@ -35,6 +35,15 @@ function VerifyAccessToken (passRole) {
         req.user = user
         req.token = token
 
+        const role = req.user.role
+
+        if(!passRole.includes(role)){
+             return res.status(StatusCodes.FORBIDDEN).json({
+                    success: false,
+                    message: "You are not authorized to access this resource."
+                });
+        }
+
         return next()
         } catch (error) {
             console.log(error)
